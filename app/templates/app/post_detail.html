@@ -5,5 +5,10 @@
 <h1>{{object.title}}</h1>
 <img src="{{ object.image.url }}" alt="">
 <p>{{object.content}}</p>
+<form action="" method="POST">
+    {% csrf_token %} 
+    {{ form.as_p }}
+    <button type="submit">Comment</button>
+</form>
 
 {% endblock content %}

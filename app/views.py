@@ -1,7 +1,7 @@
 from gc import get_objects
 from django.shortcuts import redirect, render
 from .models import Post
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 
 def post_list(request):
     # qs = Post.objects.filter(status='published') # here i dont want drafts to be seen on FE
@@ -28,11 +28,23 @@ def post_create(request):
 
 
 def post_detail(request, slug): # used pk instead of slug
+    # print(request.path)
     # obj = get_objects(Post, slug=slug)
-    obj = Post.objects.get(slug=slug)
+    # obj = Post.objects.get(slug=slug)
     # obj = Post.objects.get(pk=pk)
+    form = CommentForm()
+    obj = Post.objects.get(slug=slug)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid:
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.save()
+            return redirect('app:detail', slug=slug)
+            # return redirect(request.path) # redirect to the same page
     context = {
-        "object":obj
+        "object":obj,
+        "form": form,
     }
     return render(request, "app/post_detail.html", context)
 
