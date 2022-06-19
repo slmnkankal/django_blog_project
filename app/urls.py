@@ -1,6 +1,6 @@
 
 from django.urls import path
-from .views import post_create, post_delete, post_list, post_detail, post_update
+from .views import post_create, post_delete, post_list, post_detail, post_update, like
 
 app_name = "app"
 urlpatterns = [
@@ -12,5 +12,6 @@ urlpatterns = [
     path("<str:slug>/update/", post_update, name="update"),
     # path("<int:pk>/delete/", post_delete, name="delete"),
     path("<str:slug>/delete/", post_delete, name="delete"),
+    path("<str:slug>/like/", like, name="like"),
 ]
 

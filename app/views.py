@@ -1,6 +1,6 @@
 from gc import get_objects
 from django.shortcuts import redirect, render
-from .models import Post
+from .models import Post, Like
 from .forms import PostForm, CommentForm
 
 def post_list(request):
@@ -28,7 +28,7 @@ def post_create(request):
 
 
 def post_detail(request, slug): # used pk instead of slug
-    # print(request.path)
+    print(request.user)
     # obj = get_objects(Post, slug=slug)
     # obj = Post.objects.get(slug=slug)
     # obj = Post.objects.get(pk=pk)
@@ -40,8 +40,8 @@ def post_detail(request, slug): # used pk instead of slug
             comment = form.save(commit=False)
             comment.user = request.user
             comment.save()
-            return redirect('app:detail', slug=slug)
-            # return redirect(request.path) # redirect to the same page
+            # return redirect('app:detail', slug=slug)
+            return redirect(request.path) # redirect to the same page
     context = {
         "object":obj,
         "form": form,
@@ -73,4 +73,16 @@ def post_delete(request, slug):
         "object": obj
     }
     return render(request, "app/post_delete.html", context)
+
+
+def like(request, slug):
+    if request.method == "POST":
+        obj = Post.objects.get(slug=slug)
+        like_qs = Like.objects.filter(user=request.user, post=obj)
+        if like_qs:
+            like_qs[0].delete()
+        else:
+            Like.objects.create(user=request.user, post=obj)
+        return redirect('app:detail', slug=slug)
+
 

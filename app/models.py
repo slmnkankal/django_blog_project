@@ -42,9 +42,12 @@ class Post(models.Model):
     def like_count(self):
         return self.like_set.all().count()
 
+    def comments(self):
+        return self.comment_set.all()
+
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, null=True, on_delete=models.CASCADE)
     time_stamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
 
