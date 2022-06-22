@@ -68,7 +68,7 @@ def post_delete(request, slug):
     obj = Post.objects.get(slug=slug)
     # obj = Post.objects.get(pk=pk)
 
-    if (request.user.id != obj.author.id):
+    if request.user != obj.author:
         # return HTTPResponse("You are not authorized!")
         return redirect('app:list')
 

@@ -1,37 +1,6 @@
-<!-- {% extends 'app/base.html' %}
+{% extends 'app/base.html' %}
 
 {% block content %}
-
-<h1>{{object.title}}</h1>
-<img src="{{ object.image.url }}" alt="">
-<p>{{object.content}}</p>
-<form action="" method="POST">
-    {% csrf_token %} 
-    {{ form.as_p }}
-    <button type="submit">Comment</button>
-</form>
-
-{% for comment in object.comments %} 
-<p>commented by {{ user }}</p>
-{{ comment.content }}
-<hr>
-{% endfor %} 
-
-<form action="{% url 'app:like' object.slug %}" method="POST">
-    {% csrf_token %}
-    <input type="hidden", name="post">
-    <input type="hidden", name="user">
-    <button type="submit">Like</button> {{ object.like_count }}
-
-</form>
-<br>
-{% if user.id == object.author.id %} 
-<a href="{% url 'app:update' object.slug %}">Update</a>
-<a href="{% url 'app:delete' object.slug %}">Delete</a>
-{% endif %}
-
-{% endblock content %} -->
-
 {% load crispy_forms_tags %} 
 
 <div class="card mb-3">
@@ -97,5 +66,5 @@
         <a href="{% url 'app:delete' object.slug %}" class="btn btn-danger">Delete</a>
         {% endif %}
     </div>
-    
 </div>
+{% endblock content %}

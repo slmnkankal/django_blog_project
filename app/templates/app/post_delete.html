@@ -1,12 +1,19 @@
 {% extends "app/base.html" %}
-
+{% load static %}
 {% block content %}
 
-<p>Are you sure delete {{ object.title }}</p>
-<form action="" method="POST">
-    {% csrf_token %}
-    <a href="{% url 'app:list' %}">Cancel</a>
-    <button type="submit">Yes</button>
-</form>
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="card card-body">
+            <p>Are you sure want to delete "{{object}}"</p>
 
-{% endblock content %}
+            <form action="" method="POST">
+                {% csrf_token %}
+                <a href="{% url 'app:list' %}" class="btn btn-warning">Cancel</a>
+                <input type="submit" class="btn btn-danger" name="Confirm">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
