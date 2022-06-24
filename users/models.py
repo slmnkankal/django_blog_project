@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django import forms
 
 def user_profile_path(instance, filename):
     return 'users/{0}/{1}'.format(instance.user.id, filename)
@@ -10,4 +11,4 @@ class Profile(models.Model):
     bio = models.TextField(blank=True)
 
     def __str__(self):
-        return self.user
+        return str(self.user)
