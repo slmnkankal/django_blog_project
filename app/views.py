@@ -1,8 +1,9 @@
-from gc import get_objects
+
 from http.client import HTTPResponse
 from django.shortcuts import redirect, render
 from .models import Post, Like
 from .forms import PostForm, CommentForm
+from django.contrib.auth.decorators import login_required
 
 def post_list(request):
     # qs = Post.objects.filter(status='published') # here i dont want drafts to be seen on FE
@@ -12,6 +13,7 @@ def post_list(request):
     }
     return render(request, "app/post_list.html", context)
 
+@login_required()
 def post_create(request):
     # form = PostForm(request.POST or None, request.FILES or None)
     form = PostForm()
@@ -49,11 +51,16 @@ def post_detail(request, slug): # used pk instead of slug
     }
     return render(request, "app/post_detail.html", context)
 
+@login_required()
 def post_update(request, slug):
     # obj = get_objects(Post, slug=slug)
     # obj = Post.objects.get(pk=pk)
     obj = Post.objects.get(slug=slug)
     form = PostForm(request.POST or None, request.FILES or None, instance=obj)
+    if request.user != obj.author:
+        # return HTTPResponse("You are not authorized!")
+        return redirect('app:list')
+
     if form.is_valid():
         form.save()
         return redirect("app:list")
@@ -80,7 +87,7 @@ def post_delete(request, slug):
     }
     return render(request, "app/post_delete.html", context)
 
-
+@login_required()
 def like(request, slug):
     if request.method == "POST":
         obj = Post.objects.get(slug=slug)
