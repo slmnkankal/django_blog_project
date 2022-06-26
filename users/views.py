@@ -1,10 +1,13 @@
 from django.shortcuts import redirect, render
 from .forms import RegistrationForm, UserUpdateForm, ProfileUpdateForm
+from django.contrib import messages
 
 
 def register(request):
     form = RegistrationForm(request.POST or None)
-
+    if request.user.is_authenticated():
+        messages.warning(request, "You already have an account!")
+        return redirect("app:list")
     if form.is_valid():
         form.save()
         return redirect("login")

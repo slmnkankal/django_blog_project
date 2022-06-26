@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from .models import Post, Like
 from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 def post_list(request):
     # qs = Post.objects.filter(status='published') # here i dont want drafts to be seen on FE
@@ -23,6 +24,7 @@ def post_create(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
+            messages.success(request, "Post created successfully!")
             return redirect("app:list")
     context = {
         'form':form
@@ -58,11 +60,13 @@ def post_update(request, slug):
     obj = Post.objects.get(slug=slug)
     form = PostForm(request.POST or None, request.FILES or None, instance=obj)
     if request.user != obj.author:
+        messages.warning(request, "You are not a writer of this post!")
         # return HTTPResponse("You are not authorized!")
         return redirect('app:list')
 
     if form.is_valid():
         form.save()
+        messages.success(request, "Post updated successfully!")
         return redirect("app:list")
 
     context = {
@@ -71,16 +75,19 @@ def post_update(request, slug):
     }
     return render(request, "app/post_update.html", context)
 
+@login_required()
 def post_delete(request, slug):
     obj = Post.objects.get(slug=slug)
     # obj = Post.objects.get(pk=pk)
 
     if request.user != obj.author:
+        messages.warning(request, "You are not a writer of this post!")
         # return HTTPResponse("You are not authorized!")
         return redirect('app:list')
 
     if request.method == "POST":
         obj.delete()
+        messages.success(request, "Post deleted!!")
         return redirect("app:list")
     context = {
         "object": obj
@@ -97,5 +104,6 @@ def like(request, slug):
         else:
             Like.objects.create(user=request.user, post=obj)
         return redirect('app:detail', slug=slug)
+    return redirect('app:detail', slug=slug)
 
 
