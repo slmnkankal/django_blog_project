@@ -28,7 +28,8 @@ class Post(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
     author  = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=OPTIONS, default='d')
-    slug = models.SlugField(blank=True, unique=True, default=uuid.uuid4) # blank=True, default=uuid.uuid4
+    slug = models.SlugField(blank=True, unique=True) # gives ==> /learn-the-rules-6b07ef2473/
+    # slug = models.SlugField(blank=True, unique=True, default=uuid.uuid4) # gives ==> /c67aa24e-fc26-44e6-8d12-d00f4e7fdf1e/
 
     def __str__(self):
         return self.title

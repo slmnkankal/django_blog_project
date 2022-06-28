@@ -1,7 +1,7 @@
 
 from http.client import HTTPResponse
 from django.shortcuts import redirect, render
-from .models import Post, Like
+from .models import Post, Like, PostView
 from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -39,6 +39,9 @@ def post_detail(request, slug): # used pk instead of slug
     # obj = Post.objects.get(pk=pk)
     form = CommentForm()
     obj = Post.objects.get(slug=slug)
+    if request.user.is_authenticated:
+        PostView.objects.get_or_create(user=request.user, post=obj) # counts one for one user
+        # PostView.objects.create(user=request.user, post=obj) # counts every view 
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid:
