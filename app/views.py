@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 def post_list(request):
-    # qs = Post.objects.filter(status='published') # here i dont want drafts to be seen on FE
+    # qs = Post.objects.filter(status='p') # here i dont want drafts to be seen on FE
     qs = Post.objects.all()
     context = {
         "object_list": qs
