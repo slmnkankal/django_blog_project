@@ -47,6 +47,7 @@ def post_detail(request, slug): # used pk instead of slug
         if form.is_valid:
             comment = form.save(commit=False)
             comment.user = request.user
+            comment.post = obj
             comment.save()
             # return redirect('app:detail', slug=slug)
             return redirect(request.path) # redirect to the same page
