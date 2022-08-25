@@ -7,5 +7,6 @@ Adding new post on heroku:
 heroku run "python manage.py createsuperuser" and the next steps,
 enter admin panel and create categories and save,
 use these categories when creating new post.
-here i created a superuser for you: adminuser admin
+here i created a superuser for you: adminuser admin  
+https://blog-project-dj.herokuapp.com/admin/
 
