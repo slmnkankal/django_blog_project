@@ -1,5 +1,5 @@
 # django_blog_project
 
-![django-blog-project](https://user-images.githubusercontent.com/94119964/186347529-d9274735-9607-4039-8b2a-ba06ed3b8d37.png)
+![django-blog-project-post-comment-view-like](https://user-images.githubusercontent.com/94119964/226186563-3eca1c2f-cafa-4967-8fe9-7ae835eb4e2b.gif)
 
 
